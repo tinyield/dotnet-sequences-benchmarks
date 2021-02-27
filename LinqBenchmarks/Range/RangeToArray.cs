@@ -1,6 +1,7 @@
 ﻿
 using BenchmarkDotNet.Attributes;
 using JM.LinqFaster.SIMD;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Buffers;
@@ -50,6 +51,10 @@ namespace LinqBenchmarks.Range
         public int[] Hyperlinq()
             => ValueEnumerable
                 .Range(Start, Count)
+                .ToArray();
+
+        [Benchmark]
+        public int[] Tinyield() => Query.Range(Start, Count)
                 .ToArray();
     }
 }

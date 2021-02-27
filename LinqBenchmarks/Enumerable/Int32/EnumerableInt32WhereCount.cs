@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Linq;
@@ -54,6 +55,11 @@ namespace LinqBenchmarks.Enumerable.Int32
         public int Hyperlinq_IFunction()
             => source.AsValueEnumerable()
                 .Where<Int32IsEven>()
+                .Count();
+
+        [Benchmark]
+        public long Tinyield() => Query.FromEnumerable(source)
+                .Filter(i => i.IsEven())
                 .Count();
     }
 }

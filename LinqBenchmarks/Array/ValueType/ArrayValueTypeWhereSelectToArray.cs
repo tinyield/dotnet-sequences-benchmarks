@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -83,6 +84,12 @@ namespace LinqBenchmarks.Array.ValueType
             => source.AsValueEnumerable()
                 .Where<FatValueTypeIsEven>()
                 .Select<FatValueType, DoubleOfFatValueType>()
+                .ToArray();
+
+        [Benchmark]
+        public FatValueType[] Tinyield() => Query.Of(source)
+                .Filter(i => i.IsEven())
+                .Map(i => i * 2)
                 .ToArray();
     }
 }

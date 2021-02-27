@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using JM.LinqFaster.SIMD;
 using NetFabric.Hyperlinq;
@@ -130,5 +131,14 @@ namespace LinqBenchmarks.Array.Int32
             return sum;
         }
 
+        [Benchmark]
+        public int Tinyield()
+        {
+            var sum = 0;
+            Query.Of(source)
+                .Map(i => i * 2)
+                .Traverse(item => sum += item);
+            return sum;
+        }
     }
 }

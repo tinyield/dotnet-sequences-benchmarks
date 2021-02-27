@@ -1,5 +1,6 @@
 ﻿
 using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Collections.Generic;
@@ -60,5 +61,9 @@ namespace LinqBenchmarks.Range
             => ValueEnumerable
                 .Range(Start, Count)
                 .ToList();
+
+        [Benchmark]
+        public IList<int> Tinyield() => Query.Range(Start, Count)
+            .ToList();
     }
 }

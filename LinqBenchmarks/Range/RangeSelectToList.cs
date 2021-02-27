@@ -1,5 +1,6 @@
 ﻿
 using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -91,5 +92,10 @@ namespace LinqBenchmarks.Range
                 .Range(Start, Count)
                 .SelectVector<int, DoubleOfInt32>()
                 .ToList();
+
+        [Benchmark]
+        public IList<int> Tinyield() => Query.Range(Start, Count)
+            .Map(i => i * 2)
+            .ToList();
     }
 }

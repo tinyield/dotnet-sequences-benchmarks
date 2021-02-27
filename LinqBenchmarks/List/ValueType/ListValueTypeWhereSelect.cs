@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -109,6 +110,17 @@ namespace LinqBenchmarks.List.ValueType
                 .Where<FatValueTypeIsEven>()
                 .Select<FatValueType, DoubleOfFatValueType>())
                 sum += item;
+            return sum;
+        }
+
+        [Benchmark]
+        public FatValueType Tinyield()
+        {
+            var sum = default(FatValueType);
+            Query.FromEnumerable(source)
+                .Filter(i => i.IsEven())
+                .Map(i => i * 2)
+                .Traverse(item => sum += item);
             return sum;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Linq;
@@ -82,6 +83,17 @@ namespace LinqBenchmarks.Enumerable.Int32
                 .Where<Int32IsEven>()
                 .Select<int, DoubleOfInt32>())
                 sum += item;
+            return sum;
+        }
+
+        [Benchmark]
+        public int Tinyield()
+        {
+            var sum = 0;
+            Query.FromEnumerable(source)
+                .Filter(i => i.IsEven())
+                .Map(i => i * 2)
+                .Traverse(item => sum += item);
             return sum;
         }
     }

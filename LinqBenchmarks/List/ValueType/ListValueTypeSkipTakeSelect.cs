@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -137,6 +138,19 @@ namespace LinqBenchmarks.List.ValueType
               .Select<FatValueType, DoubleOfFatValueType>();
             for (var index = 0; index < items.Count; index++)
                 sum += items[index];
+            return sum;
+        }
+
+
+        [Benchmark]
+        public FatValueType Tinyield()
+        {
+            var sum = default(FatValueType);
+            Query.FromEnumerable(source)
+                .Skip(Skip)
+                .Limit(Count)
+                .Map(i => i * 2)
+                .Traverse(item => sum += item);
             return sum;
         }
     }

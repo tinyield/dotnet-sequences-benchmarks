@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Collections.Generic;
@@ -95,6 +96,16 @@ namespace LinqBenchmarks.Array.Int32
             foreach (var item in source.AsValueEnumerable()
                 .Distinct())
                 sum += item;
+            return sum;
+        }
+
+        [Benchmark]
+        public int Tinyield()
+        {
+            var sum = 0;
+            Query.Of(source)
+                .Distinct()
+                .Traverse(item => sum += item);
             return sum;
         }
     }

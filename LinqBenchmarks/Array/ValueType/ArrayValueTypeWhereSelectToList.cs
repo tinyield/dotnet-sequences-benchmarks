@@ -1,12 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LinqBenchmarks.Array.ValueType
-{ 
+namespace LinqBenchmarks.Array.ValueType 
+{
     public partial class ArrayValueTypeWhereSelectToList: ValueTypeArrayBenchmarkBase
     {
         [Benchmark(Baseline = true)]
@@ -81,6 +82,12 @@ namespace LinqBenchmarks.Array.ValueType
             => source.AsValueEnumerable()
                 .Where<FatValueTypeIsEven>()
                 .Select<FatValueType, DoubleOfFatValueType>()
+                .ToList();
+
+        [Benchmark]
+        public IList<FatValueType> Tinyield() => Query.Of(source)
+                .Filter(i => i.IsEven())
+                .Map(i => i * 2)
                 .ToList();
     }
 }

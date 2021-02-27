@@ -1,6 +1,7 @@
 ﻿
 using BenchmarkDotNet.Attributes;
 using JM.LinqFaster.SIMD;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Collections.Generic;
@@ -92,5 +93,14 @@ namespace LinqBenchmarks.Range
             return sum;
         }
 #pragma warning restore HLQ010 // Consider using a 'for' loop instead.
+
+        [Benchmark]
+        public int Tinyield()
+        {
+            var sum = 0;
+            Query.Range(Start, Count)
+                .Traverse(i => sum += i);
+            return sum;
+        }
     }
 }

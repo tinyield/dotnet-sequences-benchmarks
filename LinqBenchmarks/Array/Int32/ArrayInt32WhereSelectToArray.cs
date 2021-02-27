@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -83,5 +84,14 @@ namespace LinqBenchmarks.Array.Int32
                 .Select<int, DoubleOfInt32>()
                 .ToArray();
 
+
+        [Benchmark]
+        public int[] Tinyield()
+        {
+            return Query.Of(source)
+                .Filter(i => i.IsEven())
+                .Map(item => item * 2)
+                .ToArray();
+        }
     }
 }

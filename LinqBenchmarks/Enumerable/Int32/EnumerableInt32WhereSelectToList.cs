@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using NetFabric.Hyperlinq;
 using StructLinq;
 using System.Collections.Generic;
@@ -60,6 +61,13 @@ namespace LinqBenchmarks.Enumerable.Int32
             => source.AsValueEnumerable()
                 .Where<Int32IsEven>()
                 .Select<int, DoubleOfInt32>()
+                .ToList();
+
+
+        [Benchmark]
+        public IList<int> Tinyield() => Query.FromEnumerable(source)
+                .Filter(i => i.IsEven())
+                .Map(i => i * 2)
                 .ToList();
     }
 }

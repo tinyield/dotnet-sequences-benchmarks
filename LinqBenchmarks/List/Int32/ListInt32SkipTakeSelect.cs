@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using com.tinyield;
 using JM.LinqFaster;
 using NetFabric.Hyperlinq;
 using StructLinq;
@@ -113,6 +114,18 @@ namespace LinqBenchmarks.List.Int32
             var items = source.AsValueEnumerable().Skip(Skip).Take(Count).Select(item => item * 2);
             for (var index = 0; index < items.Count; index++)
                 sum += items[index];
+            return sum;
+        }
+
+        [Benchmark]
+        public int Tinyield()
+        {
+            var sum = 0;
+            Query.FromEnumerable(source)
+                .Skip(Skip)
+                .Limit(Count)
+                .Map(i => i * 2)
+                .Traverse(item => sum += item);
             return sum;
         }
     }
